@@ -5,6 +5,7 @@ import 'package:interviewapp/core/failur/failure.dart';
 class DioClientSetup{
 
   static const loginUrl = "https://peanut.ifxdb.com/api/ClientCabinetBasic/IsAccountCredentialsCorrect";
+  static const getProfileUrl = "https://peanut.ifxdb.com/api/ClientCabinetBasic/GetAccountInformation";
 
   static Future<Either<Failure,Response>> postRequest(String url, Map<String, dynamic> data) async {
     final dio = Dio();

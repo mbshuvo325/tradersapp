@@ -1,101 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:interviewapp/core/utils/utils.dart';
+import 'package:interviewapp/features/auth/data/model/request/login_request.dart';
+import 'package:interviewapp/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:interviewapp/features/auth/presentation/widgets/input_form_widget.dart';
 
-Card buildCard() {
-  return Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    elevation: 10,
-    child: Container(
-      width: 430,
-      height: 415,
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              autocorrect: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Email address or phone number',
-                hintStyle: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              obscureText: true,
-              autocorrect: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Password',
-                hintStyle: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Row(
+class BuildCard extends StatelessWidget {
+  BuildCard({Key? key}) : super(key: key);
+
+ final TextEditingController idController = TextEditingController();
+ final TextEditingController passwordController = TextEditingController();
+ final formKey = GlobalKey<FormState>();
+ final controller = Get.put(AuthController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: CustomColor.liteGreen,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 10,
+      child: Container(
+        width: 430,
+        height: 315,
+        padding: const EdgeInsets.all(10.0),
+        child: Form(
+          key: formKey,
+          child: Column(
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 9.0, bottom: 15.0, left: 9.0, right: 9.0),
-                  child: ElevatedButton(
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: InputRenderer(hintText: CustomString.inputUserId,controller: idController,keyBoardType: TextInputType.number,),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: InputRenderer(hintText: CustomString.password,controller: passwordController,keyBoardType: TextInputType.text),
+              ),
+              Row(
+                children: [
+                  Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        'Log In',
-                        style: GoogleFonts.roboto(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      padding: const EdgeInsets.only(
+                          top: 9.0, bottom: 15.0, left: 9.0, right: 9.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColor.darkGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4), // <-- Radius
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            CustomString.login,
+                            style: GoogleFonts.roboto(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if(formKey.currentState!.validate()){
+                            LoginRequest request = LoginRequest(login: int.parse(idController.text), password: passwordController.text);
+                            controller.useCase(request);
+                          }
+                        },
                       ),
                     ),
-                    onPressed: () {},
                   ),
-                ),
+                ],
               ),
             ],
           ),
-// ignore: deprecated_member_use
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              'Forgotten password?',
-              style: GoogleFonts.roboto(
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Divider(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  'Create New Account',
-                  style: GoogleFonts.roboto(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
