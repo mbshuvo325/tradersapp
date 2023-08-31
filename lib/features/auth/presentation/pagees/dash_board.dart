@@ -7,24 +7,13 @@ import '../controllers/profile_controller.dart';
 import '../widgets/asset_image.dart';
 import '../widgets/dashboard_card.dart';
 import '../widgets/internet_checker.dart';
+import '../widgets/loading_dialog.dart';
 import '../widgets/text_widget.dart';
 
-class DashBoardPage extends StatefulWidget {
-  const DashBoardPage({Key? key}) : super(key: key);
+class DashBoardPage extends StatelessWidget {
+ DashBoardPage({Key? key}) : super(key: key);
 
-  @override
-  State<DashBoardPage> createState() => _DashBoardPageState();
-}
-
-class _DashBoardPageState extends State<DashBoardPage> {
   final controller = Get.put(ProfileController());
-
-  @override
-  void initState() {
-    // controller.getProfileData();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ConnectivityChecker(
@@ -41,11 +30,26 @@ class _DashBoardPageState extends State<DashBoardPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: IconButton(
-                onPressed: () {
-                  LocalDtaSource.clearBox();
-                  AppRoute.routeToLogin();
+                onPressed: () async{
+                  Dialogs.showLoadingDialog(message: "Logging out");
+                  Future.delayed(const Duration(seconds: 2),(){
+                    LocalDtaSource.clearBox();
+                    AppRoute.routeToLogin();
+                    Get.back();
+                  });
                 },
-                icon: const Icon(Icons.logout,color: Colors.white,),
+                icon: const Row(
+                  children: [
+                    TextRenderer(
+                      value: "Log Out",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    SizedBox(width: 5,),
+                    Icon(Icons.logout,color: Colors.white,),
+                  ],
+                ),
               ),
             )
           ],
@@ -64,8 +68,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     borderRadius: BorderRadius.circular(100),
                     child: AssetImageRenderer(
                       path: CustomImages.appLogo,
-                      height: 150,
-                      width: 150,
+                      height: 70,
+                      width: 70,
                     ),
                   ),
                   Row(
@@ -115,7 +119,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
                         child: Obx(
-                          ()=> TextRenderer(
+                              ()=> TextRenderer(
                             value: controller.userPhone.value ?? controller.userData.value!.phone!,
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
@@ -150,11 +154,119 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextRenderer(
+                        value: "Open Trades",
+                        color: CustomColor.liteGreen,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: CustomColor.liteGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          onPressed: (){
+                            controller.getCurrentOpenTrades();
+                          },child: const Row(
+                            children: [
+                              Icon(Icons.refresh,color: Colors.white,size: 15,),
+                              TextRenderer(
+                        value: "Refresh",
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                            ],
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 5,),
+                  Obx(
+                    ()=>controller.tradeLoading.value ?
+                    Center(child: CircularProgressIndicator(color: CustomColor.liteGreen,),) :
+                    controller.openTrades.isNotEmpty ?
+                    SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.openTrades.length,
+                          itemBuilder: (context,index){
+                          var item = controller.openTrades[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                decoration: BoxDecoration(
+                                  color: CustomColor.liteGreen,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      spreadRadius: 0.5,
+                                      blurRadius: 0.5,
+                                      offset: const Offset(0,0), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextRenderer(
+                                      value: "Ticket : ${item.ticket}",
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    TextRenderer(
+                                      value: "Current Price : ${item.currentPrice?.toStringAsFixed(item.digits!)}",
+                                      color: CustomColor.darkGreen,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    TextRenderer(
+                                      value: "Open Price : ${item.openPrice?.toStringAsFixed(item.digits!)}",
+                                      color: CustomColor.darkGreen,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    TextRenderer(
+                                      value: "Profit: ${item.profit?.toStringAsFixed(item.digits!)}",
+                                      color: CustomColor.darkGreen,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ) : Container(),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextRenderer(
+                    value: "Total Profit : ${controller.totalProfit.value.toStringAsFixed(2)}",
+                    color: CustomColor.darkGreen,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  const SizedBox(
+                    height: 5,
                   ),
                   TextRenderer(
                     value: "Account Info",
-                    color: CustomColor.darkGreen,
+                    color: CustomColor.liteGreen,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),

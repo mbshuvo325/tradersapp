@@ -9,6 +9,7 @@ import '../widgets/snack_bar_widget.dart';
 
 class AuthController extends GetxController{
   final repository = Get.put(DataRepository());
+  final obscureText = true.obs;
 
   login(LoginRequest request) async{
     Dialogs.showLoadingDialog(message: CustomString.signingIn);

@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:interviewapp/features/auth/presentation/pagees/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
-import 'features/auth/data/data_source/local/local_data_storage.dart';
-import 'features/auth/presentation/pagees/login_page.dart';
+
 
 void main() async{
     WidgetsFlutterBinding.ensureInitialized(); // Required for path_provider

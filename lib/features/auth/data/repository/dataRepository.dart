@@ -69,7 +69,7 @@ class DataRepository extends DataSourceRepository{
   }
 
   @override
-  Future<Either<Failure, GetOpenTradesResponse>>? getAllOpenTrades(ProfileRequest request) async{
+  Future<Either<Failure,List<GetOpenTradesResponse>>>? getAllOpenTrades(ProfileRequest request) async{
     bool result = await DataConnectionChecker().hasConnection;
     if(!result){
       return Left(Failure("No Internet Connection"));
@@ -78,6 +78,8 @@ class DataRepository extends DataSourceRepository{
     if(response!.isRight){
       return Right(response.right);
     }else{
+      LocalDtaSource.clearBox();
+      AppRoute.routeToLogin();
       return Left(response.left);
     }
   }

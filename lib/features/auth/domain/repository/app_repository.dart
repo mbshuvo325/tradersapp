@@ -10,5 +10,5 @@ abstract class DataSourceRepository {
   Future<Either<Failure,LoginResponse>>? login(LoginRequest request);
   Future<Either<Failure,ProfileResponse>>? getUserProfile(ProfileRequest request);
   Future<Either<Failure,String>>? getPhoneLastFourDigit(ProfileRequest request);
-  Future<Either<Failure,GetOpenTradesResponse>>? getAllOpenTrades(ProfileRequest request);
+  Future<Either<Failure,List<GetOpenTradesResponse>>>? getAllOpenTrades(ProfileRequest request);
 }

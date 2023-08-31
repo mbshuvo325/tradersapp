@@ -56,11 +56,17 @@ class RemoteDataSource implements DataSourceRepository{
   }
 
   @override
-  Future<Either<Failure, GetOpenTradesResponse>>? getAllOpenTrades(ProfileRequest request) async{
+  Future<Either<Failure,List<GetOpenTradesResponse>>>? getAllOpenTrades(ProfileRequest request) async{
     try {
       final response = await DioClientSetup.postRequest(DioClientSetup.openTrade, request.toMap());
       if(response.isRight){
-        return Right(response.right.data);
+        List<GetOpenTradesResponse> parsedData = [];
+        List<dynamic> data = response.right.data;
+        data.forEach((element) {
+          final trade = GetOpenTradesResponse.fromMap(element);
+          parsedData.add(trade);
+        });
+        return Right(parsedData);
       }else{
         return Left(Failure("Session Expired"));
       }

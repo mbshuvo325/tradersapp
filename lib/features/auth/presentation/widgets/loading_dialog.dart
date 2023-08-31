@@ -7,7 +7,8 @@ class Dialogs {
   static Future<void> showLoadingDialog({String? message = "Loading"}) async {
      return Get.defaultDialog(
         title: message!,
-        content: CircularProgressIndicator(color: CustomColor.darkGreen),
+        titleStyle: TextStyle(color: CustomColor.liteGreen),
+        content: CircularProgressIndicator(color: CustomColor.liteGreen),
         barrierDismissible: false,
       );
   }
