@@ -6,6 +6,8 @@ class DioClientSetup{
 
   static const loginUrl = "https://peanut.ifxdb.com/api/ClientCabinetBasic/IsAccountCredentialsCorrect";
   static const getProfileUrl = "https://peanut.ifxdb.com/api/ClientCabinetBasic/GetAccountInformation";
+  static const getLastFourDigitOfPhoneNumber = "https://peanut.ifxdb.com/api/ClientCabinetBasic/GetLastFourNumbersPhone";
+  static const openTrade = "https://peanut.ifxdb.com/api/ClientCabinetBasic/GetOpenTrades";
 
   static Future<Either<Failure,Response>> postRequest(String url, Map<String, dynamic> data) async {
     final dio = Dio();
@@ -13,7 +15,7 @@ class DioClientSetup{
       Response response = await dio.post(url, data: data);
       return Right(response);
     } catch (e) {
-      return Left(Failure("Server Failure"));
+      return Left(Failure("Session Expired"));
     }
   }
 

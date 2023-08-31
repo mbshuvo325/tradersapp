@@ -10,7 +10,9 @@ class TextRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(value,style: GoogleFonts.roboto(
+    return Text(value,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.roboto(
         fontSize: fontSize,
         color: color,
         fontWeight:fontWeight));

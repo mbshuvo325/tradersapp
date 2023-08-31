@@ -6,6 +6,7 @@ class LocalDtaSource{
   static String tokenKey = 'token';
   static String loginKey = "login";
   static String profileKey = "profile";
+  static String phoneLastDigit = "phoneLastDigit";
 
   static void setToken(String token) async {
     var box = await Hive.openBox(boxName);
@@ -38,9 +39,16 @@ class LocalDtaSource{
     final result = ProfileResponse.fromMap(response);
     return result;
   }
-
   static void clearBox() async{
     var box = await Hive.openBox(boxName);
     box.clear();
+  }
+  static void setPhoneLastFourDigit(String phone) async{
+    var box = await Hive.openBox(boxName);
+    box.put(phoneLastDigit, phone);
+  }
+  static Future<String?> getPhoneLastFourDigit() async{
+    var box = await Hive.openBox(boxName);
+    return box.get(phoneLastDigit);
   }
 }

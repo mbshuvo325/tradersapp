@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:either_dart/either.dart';
 import 'package:interviewapp/features/auth/data/model/request/login_request.dart';
 import 'package:interviewapp/features/auth/data/model/request/profile_request.dart';
 import 'package:interviewapp/features/auth/data/model/response/login_response.dart';
+import 'package:interviewapp/features/auth/data/model/response/open_trade_response.dart';
 import 'package:interviewapp/features/auth/data/model/response/profile_response.dart';
 import 'package:interviewapp/features/auth/domain/repository/app_repository.dart';
 import '../../../../../core/data_calling/dio_config.dart';
@@ -31,10 +34,38 @@ class RemoteDataSource implements DataSourceRepository{
         final result = ProfileResponse.fromMap(response.right.data);
         return Right(result);
       }else{
-        return Left(Failure("Something went wrong"));
+        return Left(Failure("Session Expired"));
       }
     } catch (e) {
-      return Left(Failure("Something went wrong"));
+      return Left(Failure("Session Expired"));
+    }
+  }
+
+  @override
+  Future<Either<Failure,String>>? getPhoneLastFourDigit(ProfileRequest request) async{
+    try {
+      final response = await DioClientSetup.postRequest(DioClientSetup.getLastFourDigitOfPhoneNumber, request.toMap());
+      if(response.isRight){
+        return Right(response.right.data);
+      }else{
+        return Left(Failure("Session Expired"));
+      }
+    } catch (e) {
+      return Left(Failure("Session Expired"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, GetOpenTradesResponse>>? getAllOpenTrades(ProfileRequest request) async{
+    try {
+      final response = await DioClientSetup.postRequest(DioClientSetup.openTrade, request.toMap());
+      if(response.isRight){
+        return Right(response.right.data);
+      }else{
+        return Left(Failure("Session Expired"));
+      }
+    } catch (e) {
+      return Left(Failure("Session Expired"));
     }
   }
 }
