@@ -1,3 +1,4 @@
+import 'package:data_connection_checker_nulls/data_connection_checker_nulls.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:interviewapp/core/failur/failure.dart';
@@ -15,6 +16,10 @@ class DataRepository extends DataSourceRepository{
   final repository = Get.put(RemoteDataSource());
   @override
   Future<Either<Failure,LoginResponse>>? login(LoginRequest request) async{
+    bool result = await DataConnectionChecker().hasConnection;
+    if(!result){
+      return Left(Failure("No Internet Connection"));
+    }
     final response = await repository.login(request);
     if(response!.isRight){
       LocalDtaSource.setLoginKey(request.login.toString());
@@ -27,6 +32,11 @@ class DataRepository extends DataSourceRepository{
 
   @override
   Future<Either<Failure, ProfileResponse>>? getUserProfile(ProfileRequest request) async{
+    bool result = await DataConnectionChecker().hasConnection;
+    if(!result){
+     final result = await LocalDtaSource.getUserProfile();
+      return Right(result!);
+    }
     final response = await repository.getUserProfile(request);
     if(response!.isRight){
       LocalDtaSource.setProfile(response.right);

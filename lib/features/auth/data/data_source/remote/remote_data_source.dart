@@ -16,7 +16,7 @@ class RemoteDataSource implements DataSourceRepository{
         final result = LoginResponse.fromMap(response.right.data);
         return Right(result);
       }else{
-        return Left(Failure("Something went wrong"));
+        return Left(Failure(response.left.message));
       }
     } catch (e) {
       return Left(Failure("Something went wrong"));

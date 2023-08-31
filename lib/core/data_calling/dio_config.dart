@@ -13,7 +13,7 @@ class DioClientSetup{
       Response response = await dio.post(url, data: data);
       return Right(response);
     } catch (e) {
-      return Left(Failure("Something went wrong"));
+      return Left(Failure("Server Failure"));
     }
   }
 

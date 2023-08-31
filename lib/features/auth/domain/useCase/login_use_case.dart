@@ -11,7 +11,7 @@ import '../../data/repository/dataRepository.dart';
 class LoginUseCase implements BaseUseCase<LoginResponse,LoginRequest>{
   final repository = Get.put(DataRepository());
   @override
-  Future<Either<Failure,LoginResponse>>? call(LoginRequest params) async{
+  Future<Either<Failure,LoginResponse>> call(LoginRequest params) async{
     final response = await repository.login(params);
     if(response!.isRight){
       return Right(response.right);

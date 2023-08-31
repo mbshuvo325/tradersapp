@@ -9,6 +9,6 @@ class AppRoute{
     Get.offAll(()=> const LoginPage());
   }
   static void routeToDashBoard(){
-    Get.offAll(()=> const DashBoardPage());
+    Get.offAll(()=> DashBoardPage());
   }
 }

@@ -17,4 +17,7 @@ class CustomString{
   static String inputUserId = "input user id";
   static String password = "password";
   static String login = "Log In";
+  static String loginSuccessFull = "Login Successful";
+  static String signingIn = "Sinning in...";
+  static String dashBoard = "DashBoard";
 }

@@ -15,13 +15,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   decideRoute() async {
-    final token = await LocalDtaSource.getToken();
-    Future.delayed(const Duration(seconds: 3),(){
-      if(token != null){
-        AppRoute.routeToDashBoard();
-      }else{
-        AppRoute.routeToLogin();
-      }
+    LocalDtaSource.getToken().then((value) {
+      Future.delayed(const Duration(seconds: 3),(){
+        if(value != null){
+          AppRoute.routeToDashBoard();
+        }else{
+          AppRoute.routeToLogin();
+        }
+      });
     });
   }
 

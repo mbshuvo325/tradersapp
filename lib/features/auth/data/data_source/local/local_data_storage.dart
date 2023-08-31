@@ -38,4 +38,9 @@ class LocalDtaSource{
     final result = ProfileResponse.fromMap(response);
     return result;
   }
+
+  static void clearBox() async{
+    var box = await Hive.openBox(boxName);
+    box.clear();
+  }
 }

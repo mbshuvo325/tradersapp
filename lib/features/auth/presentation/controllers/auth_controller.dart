@@ -1,20 +1,24 @@
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:interviewapp/app_routes.dart';
 import 'package:interviewapp/features/auth/data/model/request/login_request.dart';
-
-import '../../domain/useCase/login_use_case.dart';
+import '../../../../core/utils/utils.dart';
+import '../../data/repository/dataRepository.dart';
+import '../widgets/loading_dialog.dart';
+import '../widgets/snack_bar_widget.dart';
 
 class AuthController extends GetxController{
-  final useCase = Get.put(LoginUseCase());
+  final repository = Get.put(DataRepository());
 
   login(LoginRequest request) async{
-    final response = await useCase(request);
-    print("IS RIGHT 1: ${response!.isRight}");
-    if(response.isRight){
+    Dialogs.showLoadingDialog(message: CustomString.signingIn);
+    final response = await repository.login(request);
+    Get.back();
+    if(response!.isRight){
+      GetCustomSnackBar.getSnackBar(CustomString.loginSuccessFull,color: Colors.green);
       AppRoute.routeToDashBoard();
     }else{
-      print(response.left);
+      GetCustomSnackBar.getSnackBar(response.left.message,color: Colors.red);
     }
   }
 }

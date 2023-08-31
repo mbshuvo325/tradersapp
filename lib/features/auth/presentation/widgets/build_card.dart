@@ -64,7 +64,7 @@ class BuildCard extends StatelessWidget {
                         onPressed: () async {
                           if(formKey.currentState!.validate()){
                             LoginRequest request = LoginRequest(login: int.parse(idController.text), password: passwordController.text);
-                            controller.useCase(request);
+                            await controller.login(request);
                           }
                         },
                       ),
