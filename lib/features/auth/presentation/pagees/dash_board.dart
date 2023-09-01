@@ -27,28 +27,32 @@ class DashBoardPage extends StatelessWidget {
             fontSize: 25,
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: IconButton(
-                onPressed: () async{
-                  Dialogs.showLoadingDialog(message: "Logging out");
-                  Future.delayed(const Duration(seconds: 2),(){
-                    LocalDtaSource.clearBox();
-                    AppRoute.routeToLogin();
-                    Get.back();
-                  });
-                },
-                icon: const Row(
-                  children: [
-                    TextRenderer(
-                      value: "Log Out",
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                    SizedBox(width: 5,),
-                    Icon(Icons.logout,color: Colors.white,),
-                  ],
+            SizedBox(
+              height: 40,
+              width: 150,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: IconButton(
+                  onPressed: () async{
+                    Dialogs.showLoadingDialog(message: "Logging out");
+                    Future.delayed(const Duration(seconds: 2),(){
+                      LocalDtaSource.clearBox();
+                      AppRoute.routeToLogin();
+                      Get.back();
+                    });
+                  },
+                  icon: const Row(
+                    children: [
+                      TextRenderer(
+                        value: "Log Out",
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                      SizedBox(width: 5,),
+                      Icon(Icons.logout,color: Colors.white,),
+                    ],
+                  ),
                 ),
               ),
             )
