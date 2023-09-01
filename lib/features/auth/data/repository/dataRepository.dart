@@ -25,6 +25,8 @@ class DataRepository extends DataSourceRepository{
     final response = await repository.login(request);
     if(response!.isRight){
       LocalDtaSource.setLoginKey(request.login.toString());
+      LocalDtaSource.setUserId(request.login.toString());
+      LocalDtaSource.setPassword(request.password.toString());
       LocalDtaSource.setToken(response.right.token);
       return Right(response.right);
     }else{

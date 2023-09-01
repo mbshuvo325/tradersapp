@@ -224,23 +224,32 @@ class DashBoardPage extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
                                     ),
-                                    const SizedBox(height: 5,),
+                                    const SizedBox(height: 2,),
                                     TextRenderer(
                                       value: "Current Price : ${item.currentPrice?.toStringAsFixed(item.digits!)}",
                                       color: CustomColor.darkGreen,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
                                     ),
-                                    const SizedBox(height: 5,),
+                                    const SizedBox(height: 2,),
                                     TextRenderer(
                                       value: "Open Price : ${item.openPrice?.toStringAsFixed(item.digits!)}",
                                       color: CustomColor.darkGreen,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
                                     ),
-                                    const SizedBox(height: 5,),
+                                    const SizedBox(height: 2,),
                                     TextRenderer(
                                       value: "Profit: ${item.profit?.toStringAsFixed(item.digits!)}",
+                                      color: CustomColor.darkGreen,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    const SizedBox(height: 2,),
+                                    TextRenderer(
+                                      value: item.symbol!.toLowerCase().contains("#ethereum") ? "ETH" :
+                                      item.symbol!.toLowerCase().contains("eurusd") ? "EUR - USD" :
+                                      item.symbol!.toLowerCase().contains("usdjpy") ? "USD - JPY" : item.symbol!,
                                       color: CustomColor.darkGreen,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,

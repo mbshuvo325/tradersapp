@@ -9,10 +9,8 @@ import 'package:interviewapp/features/auth/presentation/widgets/input_form_widge
 class BuildCard extends StatelessWidget {
   BuildCard({Key? key}) : super(key: key);
 
- final TextEditingController idController = TextEditingController();
- final TextEditingController passwordController = TextEditingController();
- final formKey = GlobalKey<FormState>();
- final controller = Get.put(AuthController());
+  final controller = Get.put(AuthController());
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +30,11 @@ class BuildCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                child: InputRenderer(hintText: CustomString.inputUserId,controller: idController,keyBoardType: TextInputType.number,),
+                child: InputRenderer(hintText: CustomString.inputUserId,controller: controller.idController,keyBoardType: TextInputType.number,),
               ),
               Container(
                 padding: const EdgeInsets.all(10),
-                child: InputRenderer(hintText: CustomString.password,controller: passwordController,keyBoardType: TextInputType.text),
+                child: InputRenderer(hintText: CustomString.password,controller: controller.passwordController,keyBoardType: TextInputType.text),
               ),
               Row(
                 children: [
@@ -63,7 +61,7 @@ class BuildCard extends StatelessWidget {
                         ),
                         onPressed: () async {
                           if(formKey.currentState!.validate()){
-                            LoginRequest request = LoginRequest(login: int.parse(idController.text), password: passwordController.text);
+                            LoginRequest request = LoginRequest(login: int.parse(controller.idController.text), password: controller.passwordController.text);
                             await controller.login(request);
                           }
                         },

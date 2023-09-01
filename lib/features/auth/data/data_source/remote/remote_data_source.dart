@@ -65,6 +65,7 @@ class RemoteDataSource implements DataSourceRepository{
         data.forEach((element) {
           final trade = GetOpenTradesResponse.fromMap(element);
           parsedData.add(trade);
+          print("ICON : ${trade.symbol}");
         });
         return Right(parsedData);
       }else{

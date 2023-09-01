@@ -15,7 +15,11 @@ class DioClientSetup{
       Response response = await dio.post(url, data: data);
       return Right(response);
     } catch (e) {
-      return Left(Failure("Session Expired"));
+      if(url == loginUrl){
+        return Left(Failure("Invalid Credentials"));
+      }else{
+        return Left(Failure("Session Expired"));
+      }
     }
   }
 
